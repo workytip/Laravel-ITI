@@ -1,4 +1,6 @@
 @extends('layouts.app')
+@extends('layouts.nav')
+
 
 @section('title') Index @endsection
 @section('content')
@@ -10,7 +12,6 @@
       {{ session()->get('success') }}  
     </div>
   @endif
-
 <table class="table mt-4">
   <thead>
     <tr>
@@ -29,15 +30,19 @@
         <td>{{$post['posted_by']}}</td>
         <td>{{$post['creation_date']}}</td>
         <td>
-            <a href="{{route('posts.show', $post['id'])}}" class="btn btn-info">View</a>
-            {{-- <a href="{{route('posts.show', ['post' =>$post['id']])}}" class="btn btn-info">View</a> --}}
-            <a href="{{route('posts.edit',$post['id'])}}" class="btn btn-primary">Edit</a>
-            <!-- <a href="{{route('posts.delete',$post['id'])}}" class="btn btn-danger">Delete</a> -->
+          
+            <a href="{{route('posts.show', $post['id'])}}" >
+            <x-button typee="info" msg="View"></x-button>
+
+            </a>
+            <a href="{{route('posts.edit',$post['id'])}}" >
+            <x-button typee="Primary" msg="Edit"></x-button>
+            </a>
             <a onclick="return confirm('Are you sure?')">
-            <form action="{{ route('posts.delete', $post['id'])}}" method="post">
+            <form action="{{ route('posts.destroy', $post['id'])}}" method="post">
                   @csrf
                   @method('DELETE')
-                  <button class="btn btn-danger"   type="submit">Delete</button>
+                  <x-button typee="danger" msg="Delete" type="submit"></x-button>
             </form>
           </a>
         </td>

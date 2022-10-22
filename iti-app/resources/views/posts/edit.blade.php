@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@extends('layouts.nav')
 
 @section('title') Edit @endsection
 @section('content')

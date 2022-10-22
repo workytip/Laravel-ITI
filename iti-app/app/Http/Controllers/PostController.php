@@ -25,17 +25,15 @@ class PostController extends Controller
 
     public function show($postId)
     {
-        $arr = [
+        $posts = [
             ['id' => 1 , 'category' => 'test']
         ];
-        // dd($arr);
-
         return 'we are in show now';
     }
 
     public function store()
     {
-        dd('we are storing the data');
+        return redirect(route('posts.index'));
     }
 
 
@@ -48,13 +46,13 @@ class PostController extends Controller
     public function update($id)
     {
         //dd('we are updating the data');
-        return redirect('posts')->with('success', 'post updated.');
+        return redirect(route('posts.index'))->with('success', 'post updated.');
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
         //dd('we are deleting the data');
-        return redirect('posts')->with('success', 'post deleted.');
+        return redirect(route('posts.index'))->with('success', 'post deleted.');
         
     }
 }
