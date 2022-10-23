@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
-
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,17 +19,43 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Route::get('/test', function () {
+//     $testName = 'ahmedasdasdasdd';
+//     $books = ['first book', 'second book'];
 
+//     return view('test', [
+//         'name' => $testName,
+//          'age' => 23,
+//          'books' => $books,
+//     ]);
+// });
 
-// Route::get('posts', [PostController::class, 'index'])->name('posts.index');
-// Route::get('posts/create',[PostController::class, 'create'])->name('posts.create');
-// Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
-// Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+Route::get('posts', [PostController::class, 'index'])->name('posts.index');
+Route::get('posts/create',[PostController::class, 'create'])->name('posts.create');
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 
+// class Test
+// {
+//     protected $hello;
 
-Route::resource('posts', PostController::class);
+//     public function greeting () 
+//     {
 
-// Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
-// Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
-// Route::delete('/posts/{post}', [PostController::class, 'delete'])->name('posts.delete');
+//     }
+// }
 
+// $test = new Test;
+
+// $test->hello;
+// $test['hello'];// thorws exception
+
+// foreach($test as $item){ //thorws exception
+
+// }
+
+Route::get('test',function(){
+    $user = User::find(1);
+
+    dd($user->posts);
+});

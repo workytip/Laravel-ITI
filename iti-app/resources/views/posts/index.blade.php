@@ -1,17 +1,10 @@
 @extends('layouts.app')
-@extends('layouts.nav')
-
 
 @section('title') Index @endsection
 @section('content')
 <div class="text-center">
   <a href="{{route('posts.create')}}" class="mt-4 btn btn-success">Create Post</a>
 </div>
-@if(session()->get('success'))
-    <div class="alert alert-success">
-      {{ session()->get('success') }}  
-    </div>
-  @endif
 <table class="table mt-4">
   <thead>
     <tr>
@@ -26,25 +19,20 @@
     @foreach ($posts as $post)
       <tr>
         <td>{{$post['id']}}</th>
-        <td>{{$post['title']}}</td>
-        <td>{{$post['posted_by']}}</td>
-        <td>{{$post['creation_date']}}</td>
+        <td>{{$post->title}}</td>
+        @if($post->user)
+          <td>{{$post->user->name}}</td>
+        @else
+          <td>Not Defined</td>
+        @endif
+        {{-- <td>{{$post->user ? $post->user->name : 'Not Defined'}}</td>
+        <td>{{$post->user?->name}}</td> --}}
+        <td>{{$post->created_at}}</td>
         <td>
-          
-            <a href="{{route('posts.show', $post['id'])}}" >
-            <x-button typee="info" msg="View"></x-button>
-
-            </a>
-            <a href="{{route('posts.edit',$post['id'])}}" >
-            <x-button typee="Primary" msg="Edit"></x-button>
-            </a>
-            <a onclick="return confirm('Are you sure?')">
-            <form action="{{ route('posts.destroy', $post['id'])}}" method="post">
-                  @csrf
-                  @method('DELETE')
-                  <x-button typee="danger" msg="Delete" type="submit"></x-button>
-            </form>
-          </a>
+            <a href="{{route('posts.show', $post['id'])}}" class="btn btn-info">View</a>
+            {{-- <a href="{{route('posts.show', ['post' =>$post['id']])}}" class="btn btn-info">View</a> --}}
+            <a href="#" class="btn btn-primary">Edit</a>
+            <a href="#" class="btn btn-danger">Delete</a>
         </td>
       </tr>
     @endforeach
