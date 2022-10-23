@@ -19,43 +19,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/test', function () {
-//     $testName = 'ahmedasdasdasdd';
-//     $books = ['first book', 'second book'];
+// Route::get('posts', [PostController::class, 'index'])->name('posts.index');
+// Route::get('posts/create',[PostController::class, 'create'])->name('posts.create');
+// Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+// Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 
-//     return view('test', [
-//         'name' => $testName,
-//          'age' => 23,
-//          'books' => $books,
-//     ]);
+
+// Route::get('test',function(){
+//     $user = User::find(1);
+
+//     dd($user->posts);
 // });
 
-Route::get('posts', [PostController::class, 'index'])->name('posts.index');
-Route::get('posts/create',[PostController::class, 'create'])->name('posts.create');
-Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
-Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+Route::delete('posts/{id}', [PostController::class, 'delete'])->name('posts.delete');
+Route::get('posts/restore/one/{id}', [PostController::class, 'restore'])->name('posts.restore');
 
-// class Test
-// {
-//     protected $hello;
-
-//     public function greeting () 
-//     {
-
-//     }
-// }
-
-// $test = new Test;
-
-// $test->hello;
-// $test['hello'];// thorws exception
-
-// foreach($test as $item){ //thorws exception
-
-// }
-
-Route::get('test',function(){
-    $user = User::find(1);
-
-    dd($user->posts);
-});
+Route::resource('posts',PostController::class);
