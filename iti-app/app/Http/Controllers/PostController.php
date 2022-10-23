@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\User;
+use Carbon\Carbon;
 
 class PostController extends Controller
 {
@@ -13,14 +14,15 @@ class PostController extends Controller
     public function index(Request $request)
     {
 
-        $posts = Post::select("*");
+        $posts = Post::select("*")->paginate(5);
 
         if ($request->has('view_deleted')) {
 
             $posts = $posts->onlyTrashed();
 
         }
-        $posts = $posts->paginate(10);
+        // $posts = $posts->paginate(5);
+
         return view('posts.index', compact('posts'));
 
     }
@@ -38,10 +40,9 @@ class PostController extends Controller
     {
         //select * from posts where id  = $postId
         $post = Post::find($postId);
-        $user = User::find($post->user_id);
         // $post = Post::where('id', $postId)->first();
 
-        return view('posts.show',['post' => $post ,'user'=>$user]);
+        return view('posts.show',['post' => $post]);
     }
 
     public function store()

@@ -37,12 +37,9 @@
         @else
           <td>Not Defined</td>
         @endif
-        {{-- <td>{{$post->user ? $post->user->name : 'Not Defined'}}</td>
-        <td>{{$post->user?->name}}</td> --}}
-        <td>{{$post->created_at}}</td>
+        <td>{{$post->created_at->toDateString()}}</td>
         <td>
             <a href="{{route('posts.show', $post['id'])}}" class="btn btn-info">View</a>
-            {{-- <a href="{{route('posts.show', ['post' =>$post['id']])}}" class="btn btn-info">View</a> --}}
             <a href="{{route('posts.edit',$post['id'])}}" class="btn btn-primary">Edit</a>
             {{-- <x-button typee="info" msg="Delete"></x-button> --}}
 
@@ -87,5 +84,9 @@
     @endforeach
   </tbody>
 </table>
+{{ $posts->links() }}
+
+<div class="d-flex justify-content-center">
+</div>
 @endsection
 

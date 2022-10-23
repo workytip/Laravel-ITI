@@ -6,8 +6,9 @@
 <p>{{$post->description}}</p>
 <hr>
 <h3>Created By :</h3>
-<p>{{$user->name}}</p>
+<p>{{$post->user->name}}</p>
+
 <hr>
 <h3>Created At :</h3>
-<p>{{$post->created_at}}</p>
-<hr>
+<p>{{$post->created_at->isoFormat('dddd Do of MMMM YYYY, h:mm:ss A')}}</p>
+<hr> 
