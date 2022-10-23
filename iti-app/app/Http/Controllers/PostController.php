@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Database\Eloquent\Collection;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
@@ -8,12 +9,20 @@ use App\Models\User;
 
 class PostController extends Controller
 {
-    public function index()
+
+    public function index(Request $request)
     {
-        $allPosts = Post::all();//SELECT * from posts
-        return view('posts.index', [
-          'posts' => $allPosts
-        ]);
+
+        $posts = Post::select("*");
+
+        if ($request->has('view_deleted')) {
+
+            $posts = $posts->onlyTrashed();
+
+        }
+        $posts = $posts->paginate(10);
+        return view('posts.index', compact('posts'));
+
     }
 
     public function create()
@@ -91,5 +100,13 @@ class PostController extends Controller
         return back();
 
     }  
+    public function restoreAll()
+
+    {
+
+        Post::onlyTrashed()->restore();
+        return back();
+
+    }
 
 }

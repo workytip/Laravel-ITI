@@ -5,6 +5,18 @@
 <div class="text-center">
   <a href="{{route('posts.create')}}" class="mt-4 btn btn-success">Create Post</a>
 </div>
+
+@if(request()->has('view_deleted'))
+
+<a href="{{ route('posts.index') }}" class="btn btn-info">View All posts</a>
+
+<a href="{{ route('posts.restore.all') }}" class="btn btn-success">Restore All</a>
+
+@else
+
+<a href="{{ route('posts.index', ['view_deleted' => 'DeletedRecords']) }}" class="btn btn-primary">View Delete Records</a>
+
+@endif
 <table class="table mt-4">
   <thead>
     <tr>
@@ -34,16 +46,18 @@
             <a href="{{route('posts.edit',$post['id'])}}" class="btn btn-primary">Edit</a>
             {{-- <x-button typee="info" msg="Delete"></x-button> --}}
 
-            
+            @if(request()->has('view_deleted'))
+
+            <a href="{{ route('posts.restore', $post->id) }}" class="btn btn-success">Restore</a>
+
+        @else
               <form action="{{ route('posts.delete', $post['id'])}}" method="post">
                 @csrf
                 @method('DELETE')
-                <button class="btn btn-danger" name='deleted' type="submit">Delete</button>
+                <button class="btn btn-danger"  type="submit">Delete</button>
               </form>
+        @endif
 
-              @if(request()->has('deleted'))
-              <a href="{{route('posts.restore',$post['id'])}}" class="btn btn-success">Restore</a>
-              @endif
         </td>
       </tr>
     @endforeach
