@@ -68,7 +68,6 @@ class PostController extends Controller
     public function update($postId)
     {
         $post =Post::find($postId);
-        $data = request()->all();
 
         $post->title = request()->title;
         $post->description = request()->description;
