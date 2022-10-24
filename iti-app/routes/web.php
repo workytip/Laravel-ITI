@@ -40,6 +40,8 @@ Route::get('restoreAll', [PostController::class, 'restoreAll'])->name('posts.res
 // comments routing
 Route::post('comment/{id}',[PostController::class,'storeComment'])->name('comment.store');
 Route::delete('comment/{id}',[PostController::class,'DeleteComment'])->name('comment.delete');
+Route::get('comment/{id}/edit',[PostController::class,'EditComment'])->name('comment.edit');
+Route::put('comment/{id}',[PostController::class,'UpdateComment'])->name('comment.update');
 
 
 Route::resource('posts',PostController::class);

@@ -17,8 +17,10 @@ class PostController extends Controller
     {
 
         $posts = Post::select("*")->paginate(5);
+        // $posts->created_at= $posts->created_at->toDateString();
 
-        if ($request->has('view_deleted')) {
+        if ($request->has('view_deleted')) 
+        {
 
             $posts = $posts->onlyTrashed();
 
@@ -129,5 +131,23 @@ class PostController extends Controller
         $comment->delete();
         return redirect(route('posts.show',$comment->commentable_id));
     }
+
+
+    public function EditComment($Id)
+    {
+        $comment=Comment::find($Id);
+        return redirect(route('posts.show',$comment->commentable_id));
+
+
+    }
+
+    public function UpdateComment($Id)
+    {
+        $comment=Comment::find($Id);
+        $comment->body = request()->body;
+        $comment->save();
+        return redirect(route('posts.show',$comment->commentable_id));
+    }
+
 
 }

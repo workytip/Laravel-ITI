@@ -19,10 +19,21 @@
   @method('DELETE')
   @csrf
   <button type="submit" class="btn btn-danger">Delete</button>
-
 </form>
-@endforeach
- {{-- create new comment with delete --}}
+{{-- <a href="{{route('comment.edit',$comment->id)}}" class="btn btn-info edit" onclick="show()" >Edit</a> --}}
+
+ {{-- <div style="display: none" class="editComment"> --}}
+<form method="POST" action="{{route('comment.update',$comment->id)}}">
+  @method('PUT')
+  @csrf
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Edit a Comment</label>
+      <textarea name="body"  class="form-control" >{{$comment->body}}</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary" onclick="hide()">Update</button>
+  </form>
+ {{-- </div> --}}
+ @endforeach
 
 <form method="POST" action="{{route('comment.store',$post->id)}}">
 
@@ -35,4 +46,4 @@
    
       <button type="submit" class="btn btn-success">Comment</button>
     </form>
-    @endsection
+@endsection
