@@ -43,20 +43,20 @@
             <a href="{{route('posts.edit',$post['id'])}}" class="btn btn-primary">Edit</a>
             {{-- <x-button typee="info" msg="Delete"></x-button> --}}
 
-            @if(request()->has('view_deleted'))
+             @if(request()->has('view_deleted'))
 
             <a href="{{ route('posts.restore', $post->id) }}" class="btn btn-success">Restore</a>
 
         @else
              
-                <button class="btn btn-danger" data-toggle="modal" data-target="#delete">Delete</button>
+                <button class="btn btn-danger" data-toggle="modal" data-target="#delete">Delete</button> 
 
 <!-- Modal -->
-<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Deleting Post</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -75,18 +75,19 @@
             </div>
     </div>
   </div>
-</div>
+</div> 
              
-        @endif
+       @endif
 
         </td>
       </tr>
     @endforeach
   </tbody>
-</table>
-{{ $posts->links() }}
+</table> 
 
 <div class="d-flex justify-content-center">
+  {{ $posts->links() }}
+
 </div>
 @endsection
 

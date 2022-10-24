@@ -41,7 +41,7 @@ class PostController extends Controller
         //select * from posts where id  = $postId
         $post = Post::find($postId);
         // $post = Post::where('id', $postId)->first();
-
+        dd($post->created_at);
         return view('posts.show',['post' => $post]);
     }
 
@@ -75,7 +75,7 @@ class PostController extends Controller
         $post->user_id = request()->post_creator;
 
         $post->save();
-        return back();
+        return to_route('posts.index');
     }
 
     // public function destroy($postId)
