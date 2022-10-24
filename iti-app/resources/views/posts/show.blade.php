@@ -2,10 +2,6 @@
 @section('title') Show @endsection
 @section('content')
 
-{{dd($post)}}
-
-
-
 <h3>{{$post->title}}</h3>
 <hr>
 <h3>Desctiprion :</h3>
@@ -16,9 +12,9 @@
 <h5>Created At :</h5>
 <p>{{$post->created_at->isoFormat('dddd Do of MMMM YYYY, h:mm:ss A')}}</p>
 <hr> 
-{{-- @foreach($post->comments as $comment)
-<p>{{$comment}}</p>
-@endforeach --}}
+@foreach($post->comments as $comment)
+<p class="text-info">{{$comment->body}}</p>
+@endforeach
 
 <form method="POST" action="{{route('comment.store',$post->id)}}">
 

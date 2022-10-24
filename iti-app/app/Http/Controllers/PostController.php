@@ -42,6 +42,7 @@ class PostController extends Controller
     {
         //select * from posts where id  = $postId
         $post = Post::find($postId);
+
         // $post = Post::where('id', $postId)->first();
         return view('posts.show',['post' => $post]);
     }
@@ -50,7 +51,8 @@ class PostController extends Controller
     {
         //insert data
         $data = request()->all();
-        Post::create([
+        $Post =new Post();
+        $Post->comments()->create([
             'title' => request()->title,
             'description' => $data['description'],
             'user_id' => $data['post_creator'],
@@ -64,12 +66,11 @@ class PostController extends Controller
         //insert data
         Comment::create([
             'body' => request()->body,
-            'commentable_type' => 'post',
+            'commentable_type' => Post::class,
             'commentable_id' => $id,
 
         ]); 
-
-        return to_route('posts.show');
+        return back();
     }
 
     public function edit($postId)
