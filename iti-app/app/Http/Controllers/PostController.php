@@ -52,7 +52,7 @@ class PostController extends Controller
         //insert data
         $data = request()->all();
         $Post =new Post();
-        $Post->comments()->create([
+        $Post->create([
             'title' => request()->title,
             'description' => $data['description'],
             'user_id' => $data['post_creator'],
@@ -61,17 +61,7 @@ class PostController extends Controller
         return to_route('posts.index');
     }
 
-    public function storeComment($id)
-    {
-        //insert data
-        Comment::create([
-            'body' => request()->body,
-            'commentable_type' => Post::class,
-            'commentable_id' => $id,
-
-        ]); 
-        return back();
-    }
+    
 
     public function edit($postId)
     {
@@ -93,15 +83,9 @@ class PostController extends Controller
         return to_route('posts.index');
     }
 
-    // public function destroy($postId)
-    // {
-    //     $post=Post::find($postId);
-    //     $post->delete();
-    //     return back();
-    // }
+
     public function delete($postId)
     {
-        // dd(request()->all());
         $post=Post::find($postId);
         $post->delete();
         return back();
@@ -122,6 +106,28 @@ class PostController extends Controller
         Post::onlyTrashed()->restore();
         return back();
 
+    }
+
+    //////////// for comment section
+    public function storeComment($id)
+    {
+        //insert data
+        Comment::create([
+            'body' => request()->body,
+            'commentable_type' => Post::class,
+            'commentable_id' => $id,
+
+        ]); 
+        return redirect(route('posts.show',$id));
+
+    }
+    
+    public function DeleteComment($Id)
+    {
+       
+        $comment=Comment::find($Id);
+        $comment->delete();
+        return redirect(route('posts.show',$comment->commentable_id));
     }
 
 }

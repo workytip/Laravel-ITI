@@ -12,9 +12,17 @@
 <h5>Created At :</h5>
 <p>{{$post->created_at->isoFormat('dddd Do of MMMM YYYY, h:mm:ss A')}}</p>
 <hr> 
+ {{-- show coments with delete --}}
 @foreach($post->comments as $comment)
 <p class="text-info">{{$comment->body}}</p>
+<form method="POST" action="{{route('comment.delete',$comment->id)}}">
+  @method('DELETE')
+  @csrf
+  <button type="submit" class="btn btn-danger">Delete</button>
+
+</form>
 @endforeach
+ {{-- create new comment with delete --}}
 
 <form method="POST" action="{{route('comment.store',$post->id)}}">
 

@@ -32,11 +32,15 @@ Route::get('/', function () {
 
 //     dd($user->posts);
 // });
-
+// delete and restore routing
 Route::delete('posts/{id}', [PostController::class, 'delete'])->name('posts.delete');
 Route::get('posts/restore/one/{id}', [PostController::class, 'restore'])->name('posts.restore');
 Route::get('restoreAll', [PostController::class, 'restoreAll'])->name('posts.restore.all');
-Route::post('posts/{comment}',[PostController::class,'storeComment'])->name('comment.store');
+
+// comments routing
+Route::post('comment/{id}',[PostController::class,'storeComment'])->name('comment.store');
+Route::delete('comment/{id}',[PostController::class,'DeleteComment'])->name('comment.delete');
+
 
 Route::resource('posts',PostController::class);
 
