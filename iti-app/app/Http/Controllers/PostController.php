@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Comment;
 use Illuminate\Database\Eloquent\Collection;
 
 use Illuminate\Http\Request;
@@ -41,7 +43,6 @@ class PostController extends Controller
         //select * from posts where id  = $postId
         $post = Post::find($postId);
         // $post = Post::where('id', $postId)->first();
-        dd($post->created_at);
         return view('posts.show',['post' => $post]);
     }
 
@@ -56,6 +57,19 @@ class PostController extends Controller
         ]); 
 
         return to_route('posts.index');
+    }
+
+    public function storeComment($id)
+    {
+        //insert data
+        Comment::create([
+            'body' => request()->body,
+            'commentable_type' => 'post',
+            'commentable_id' => $id,
+
+        ]); 
+
+        return to_route('posts.show');
     }
 
     public function edit($postId)

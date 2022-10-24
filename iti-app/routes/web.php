@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,5 +36,11 @@ Route::get('/', function () {
 Route::delete('posts/{id}', [PostController::class, 'delete'])->name('posts.delete');
 Route::get('posts/restore/one/{id}', [PostController::class, 'restore'])->name('posts.restore');
 Route::get('restoreAll', [PostController::class, 'restoreAll'])->name('posts.restore.all');
+Route::post('posts/{comment}',[PostController::class,'storeComment'])->name('comment.store');
 
 Route::resource('posts',PostController::class);
+
+Auth::routes();
+
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
