@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\User;
-use Carbon\Carbon;
+
 
 class PostController extends Controller
 {
@@ -21,8 +21,7 @@ class PostController extends Controller
 
         if ($request->has('view_deleted')) 
         {
-
-            $posts = $posts->onlyTrashed();
+            $posts = Post::onlyTrashed()->paginate(5);
 
         }
         // $posts = $posts->paginate(5);
@@ -51,15 +50,29 @@ class PostController extends Controller
 
     public function store()
     {
+        request()->validate([
+            'title'=>['required','unique:posts','min:3'],
+            'description'=>['required','min:10'],
+
+        ]);
+        $Post =new Post();
         //insert data
         $data = request()->all();
-        $Post =new Post();
-        $Post->create([
-            'title' => request()->title,
-            'description' => $data['description'],
-            'user_id' => $data['post_creator'],
-        ]); 
+        $user=User::find($data['post_creator']);
+        if($user){
+            $Post->create([
+                'title' => request()->title,
+                'description' => $data['description'],
+                'user_id' => $data['post_creator'],
+            ]); 
+    
+        }
+        else{
+            return redirect()->back()->withErrors('user not exists!');
+        }
 
+        
+        
         return to_route('posts.index');
     }
 
@@ -75,13 +88,39 @@ class PostController extends Controller
 
     public function update($postId)
     {
+        $user=User::find(request()->post_creator);
+
         $post =Post::find($postId);
+       
+        if(request()->title == $post->title )
+        {
+            request()->validate([
+                'title'=>['required','min:3'],
+                'description'=>['required','min:10'],
+    
+            ]);
+        }
+        else{
+            request()->validate([
+                'title'=>['required','unique:posts','min:3'],
+                'description'=>['required','min:10'],
+    
+            ]);
+        }
+        
+        if($user)
+        {
+            $post->title = request()->title;
+            $post->description = request()->description;
+            $post->user_id = request()->post_creator;
+            $post->save();
+        }
+        else
+        {
+            return redirect()->back()->withErrors('user not exists!');
 
-        $post->title = request()->title;
-        $post->description = request()->description;
-        $post->user_id = request()->post_creator;
-
-        $post->save();
+        }
+       
         return to_route('posts.index');
     }
 
@@ -138,7 +177,7 @@ class PostController extends Controller
         $comment=Comment::find($Id);
         return redirect(route('posts.show',$comment->commentable_id));
 
-
+        
     }
 
     public function UpdateComment($Id)

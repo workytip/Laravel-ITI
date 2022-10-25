@@ -6,12 +6,12 @@
           @csrf
             <div class="mb-3">
               <label for="exampleInputEmail1" class="form-label">Title</label>
-              <input name="title" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+              <input name="title" type="text" class="form-control"  value="{{ old('title') }}">
             </div>
 
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Description</label>
-                <textarea name="description" class="form-control"></textarea>
+                <textarea name="description" class="form-control" >{{ old('description') }}</textarea>
               </div>
 
               <div class="mb-3">
