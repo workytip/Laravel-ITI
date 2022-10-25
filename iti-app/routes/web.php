@@ -44,7 +44,7 @@ Route::get('comment/{id}/edit',[PostController::class,'EditComment'])->name('com
 Route::put('comment/{id}',[PostController::class,'UpdateComment'])->name('comment.update');
 
 
-Route::resource('posts',PostController::class);
+Route::resource('posts',PostController::class)->middleware('auth');
 
 Auth::routes();
 
