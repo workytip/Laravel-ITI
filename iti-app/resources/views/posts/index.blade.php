@@ -51,36 +51,38 @@
 
             <a href="{{ route('posts.restore', $post->id) }}" class="btn btn-success">Restore</a>
 
-        @else
+             @else
              
-                <button class="btn btn-danger" data-toggle="modal" data-target="#delete">Delete</button> 
+
+             <!-- Button trigger modal -->
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Delete!
+</button>
 
 <!-- Modal -->
- <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Deleting Post</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        Are You Sure You Want Delete This Post ?
+     Are You Sure You Want Delete This Post ?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
         <form action="{{ route('posts.delete', $post['id'])}}" method="post">
           @csrf
           @method('DELETE')
           <button class="btn btn-danger"  type="submit">Delete</button>
         </form>
-            </div>
+      </div>
     </div>
   </div>
-</div> 
-             
+</div>
+
        @endif
 
         </td>
@@ -93,5 +95,7 @@
   {{ $posts->links() }}
 
 </div>
+
+
 @endsection
 
