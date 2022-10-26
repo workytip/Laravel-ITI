@@ -24,8 +24,6 @@ class PostController extends Controller
             $posts = Post::onlyTrashed()->paginate(5);
 
         }
-        // $posts = $posts->paginate(5);
-
         return view('posts.index', compact('posts'));
 
     }
@@ -41,10 +39,7 @@ class PostController extends Controller
 
     public function show($postId)
     {
-        //select * from posts where id  = $postId
         $post = Post::find($postId);
-
-        // $post = Post::where('id', $postId)->first();
         return view('posts.show',['post' => $post]);
     }
 
@@ -53,26 +48,19 @@ class PostController extends Controller
         request()->validate([
             'title'=>['required','unique:posts','min:3'],
             'description'=>['required','min:10'],
+            'post_creator'=>['exists:posts,user_id']
 
         ]);
         $Post =new Post();
         //insert data
         $data = request()->all();
         $user=User::find($data['post_creator']);
-        if($user){
             $Post->create([
                 'title' => request()->title,
                 'description' => $data['description'],
                 'user_id' => $data['post_creator'],
             ]); 
-    
-        }
-        else{
-            return redirect()->back()->withErrors('user not exists!');
-        }
 
-        
-        
         return to_route('posts.index');
     }
 
@@ -104,23 +92,15 @@ class PostController extends Controller
             request()->validate([
                 'title'=>['required','unique:posts','min:3'],
                 'description'=>['required','min:10'],
-    
+                'post_creator'=>['exists:posts,user_id']
             ]);
         }
-        
-        if($user)
-        {
+
             $post->title = request()->title;
             $post->description = request()->description;
             $post->user_id = request()->post_creator;
             $post->save();
-        }
-        else
-        {
-            return redirect()->back()->withErrors('user not exists!');
 
-        }
-       
         return to_route('posts.index');
     }
 
