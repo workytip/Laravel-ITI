@@ -48,9 +48,21 @@ class PostController extends Controller
         request()->validate([
             'title'=>['required','unique:posts','min:3'],
             'description'=>['required','min:10'],
-            'post_creator'=>['exists:posts,user_id']
+            'post_creator'=>['exists:posts,user_id'],
+            'image' => 'required|image|mimes:png,jpg|max:2048',
 
         ]);
+        if ($image = request()->file('image')) {
+
+            $destinationPath = 'images/';
+
+            $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+
+            $image->move($destinationPath, $profileImage);
+
+            request()->image = "$profileImage";
+
+        }
         $Post =new Post();
         //insert data
         $data = request()->all();
@@ -59,6 +71,7 @@ class PostController extends Controller
                 'title' => request()->title,
                 'description' => $data['description'],
                 'user_id' => $data['post_creator'],
+                'image'=>request()->image
             ]); 
 
         return to_route('posts.index');
@@ -96,9 +109,25 @@ class PostController extends Controller
             ]);
         }
 
+        if ($image = request()->file('image')) {
+
+            $destinationPath = 'images/';
+
+            $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+
+            $image->move($destinationPath, $profileImage);
+
+            request()->image = "$profileImage";
+
+        }
+        else
+        {
+            unset(request()->image);
+        }
             $post->title = request()->title;
             $post->description = request()->description;
             $post->user_id = request()->post_creator;
+            $post->image  =request()->image;
             $post->save();
 
         return to_route('posts.index');

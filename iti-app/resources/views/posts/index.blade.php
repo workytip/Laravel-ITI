@@ -22,6 +22,7 @@
   <thead>
     <tr>
       <th scope="col">#</th>
+      <th scope="col">Image</th>
       <th scope="col">Title</th>
       <th scope="col">Posted By</th>
       <th scope="col">Created At</th>
@@ -34,6 +35,7 @@
     @foreach ($posts as $post)
       <tr>
         <td>{{$post['id']}}</th>
+        <td><img src="/images/{{ $post->image }}" width="100px"></td>
         <td>{{$post->title}}</td>
         @if($post->user)
           <td>{{$post->user->name}}</td>

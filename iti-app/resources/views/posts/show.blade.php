@@ -2,6 +2,9 @@
 @section('title') Show @endsection
 @section('content')
 
+<div>
+  <img src="/images/{{ $post->image }}" width="500px">
+</div>
 <h3>{{$post->title}}</h3>
 <hr>
 <h3>Desctiprion :</h3>

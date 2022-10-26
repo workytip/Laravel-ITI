@@ -2,7 +2,7 @@
 
 @section('title') Edit @endsection
 @section('content')
-        <form method="POST" action="{{route('posts.update',$post->id)}}">
+        <form method="POST" action="{{route('posts.update',$post->id)}}" enctype="multipart/form-data">
           @csrf
           @method('PUT')
             <div class="mb-3">
@@ -23,7 +23,11 @@
                  @endforeach
                 </select>
               </div>
-         
+              <div class="mb-3">
+                <label  class="form-label">Image</label>
+                <img src="/images/{{ $post->image }}" width="300px">
+                <input type="file" name="image" class="form-control" placeholder="image">
+              </div>
             <button type="submit" class="btn btn-primary">Update</button>
           </form>
    
