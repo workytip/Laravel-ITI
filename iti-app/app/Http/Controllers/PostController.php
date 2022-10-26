@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -89,15 +89,14 @@ class PostController extends Controller
 
     public function update($postId)
     {
-        $user=User::find(request()->post_creator);
 
         $post =Post::find($postId);
-       
         if(request()->title == $post->title )
         {
             request()->validate([
                 'title'=>['required','min:3'],
                 'description'=>['required','min:10'],
+                'post_creator'=>['exists:posts,user_id']
     
             ]);
         }
@@ -118,11 +117,14 @@ class PostController extends Controller
             $image->move($destinationPath, $profileImage);
 
             request()->image = "$profileImage";
+            if ($post->image) {
+                Storage::delete('public/images/' . $post->image);
+              }
 
         }
         else
         {
-            unset(request()->image);
+            request()->image =$post->image ;
         }
             $post->title = request()->title;
             $post->description = request()->description;
@@ -137,6 +139,7 @@ class PostController extends Controller
     public function delete($postId)
     {
         $post=Post::find($postId);
+        Storage::delete('public/images/'.$post->image);
         $post->delete();
         return back();
     }
