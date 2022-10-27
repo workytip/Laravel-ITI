@@ -20,6 +20,8 @@ class PostController extends Controller
         // $userPosts =Post::select('*')->where('user_id','=',1)->get();
         // $userPosts = $userPosts->count();
         // dd($userPosts) ;
+        // $user = auth()->user()->id;
+        // dd($user);
 
         PruneOldPostsJob::dispatch();
         
