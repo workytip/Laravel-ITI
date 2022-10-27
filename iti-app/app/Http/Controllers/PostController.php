@@ -17,11 +17,6 @@ class PostController extends Controller
 
     public function index(Request $request)
     {
-        // $userPosts =Post::select('*')->where('user_id','=',1)->get();
-        // $userPosts = $userPosts->count();
-        // dd($userPosts) ;
-        // $user = auth()->user()->id;
-        // dd($user);
 
         PruneOldPostsJob::dispatch();
         
