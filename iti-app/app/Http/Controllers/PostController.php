@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\PruneOldPostsJob;
 use App\Models\Comment;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -15,9 +16,9 @@ class PostController extends Controller
 
     public function index(Request $request)
     {
-
+        PruneOldPostsJob::dispatch();
+        
         $posts = Post::select("*")->paginate(5);
-        // $posts->created_at= $posts->created_at->toDateString();
 
         if ($request->has('view_deleted')) 
         {
