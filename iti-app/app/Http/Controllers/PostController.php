@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\User;
+use App\Rules\Postsnumber;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
@@ -16,6 +17,10 @@ class PostController extends Controller
 
     public function index(Request $request)
     {
+        // $userPosts =Post::select('*')->where('user_id','=',1)->get();
+        // $userPosts = $userPosts->count();
+        // dd($userPosts) ;
+
         PruneOldPostsJob::dispatch();
         
         $posts = Post::select("*")->paginate(5);
@@ -47,10 +52,10 @@ class PostController extends Controller
     public function store()
     {
         request()->validate([
-            'title'=>['required','unique:posts','min:3'],
+            'title'=>['required','unique:posts','min:3','max:50'],
             'description'=>['required','min:10'],
-            'post_creator'=>['exists:posts,user_id'],
-            'image' => 'required|image|mimes:png,jpg|max:2048',
+            'post_creator'=>['exists:users,id',new Postsnumber],
+            'image' => 'image|mimes:png,jpg|max:2048',
 
         ]);
         if ($image = request()->file('image')) {
