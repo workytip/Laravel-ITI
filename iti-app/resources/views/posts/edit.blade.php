@@ -25,7 +25,7 @@
               </div>
               <div class="mb-3">
                 <label  class="form-label">Image</label>
-                <img src="/images/{{ $post->image }}" width="300px">
+                <img src="{{ url('storage/images/'.$post->image )}}" width="300px">
                 <input type="file" name="image" class="form-control" placeholder="image">
               </div>
             <button type="submit" class="btn btn-primary">Update</button>

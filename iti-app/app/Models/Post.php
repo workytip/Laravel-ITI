@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Attribute;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Cviebrock\EloquentSluggable\Sluggable;
-
+use Illuminate\Database\Eloquent\Casts\Attribute as CastsAttribute;
 
 class Post extends Model
 {
@@ -40,4 +42,5 @@ class Post extends Model
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
+  
 }

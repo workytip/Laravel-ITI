@@ -18,7 +18,7 @@ class PostController extends Controller
     public function index(Request $request)
     {
 
-        PruneOldPostsJob::dispatch();
+        // PruneOldPostsJob::dispatch();
         
         $posts = Post::select("*")->paginate(5);
 
@@ -48,28 +48,25 @@ class PostController extends Controller
 
     public function store()
     {
-        request()->validate([
-            'title'=>['required','unique:posts','min:3','max:50'],
-            'description'=>['required','min:10'],
-            'post_creator'=>['exists:users,id',new Postsnumber],
-            'image' => 'image|mimes:png,jpg|max:2048',
+ 
+
+    request()->validate([
+    'title'=>['required','unique:posts','min:3','max:50'],
+    'description'=>['required','min:10'],
+    'post_creator'=>['exists:users,id',new Postsnumber],
+    'image' => 'image|mimes:png,jpg|max:4048',
 
         ]);
         if ($image = request()->file('image')) {
 
-            $destinationPath = 'images/';
-
-            $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
-
-            $image->move($destinationPath, $profileImage);
-
-            request()->image = "$profileImage";
+         $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+         $path = request()->file('image')->storeAs('public/images',$profileImage);
+         request()->image = "$profileImage";
 
         }
         $Post =new Post();
         //insert data
         $data = request()->all();
-        $user=User::find($data['post_creator']);
             $Post->create([
                 'title' => request()->title,
                 'description' => $data['description'],
@@ -89,6 +86,8 @@ class PostController extends Controller
 
         return view('posts.edit',['post'=>$post ,'allUsers' => $allUsers]);
     }
+
+    ################# Update ###################
 
     public function update($postId)
     {
@@ -113,16 +112,13 @@ class PostController extends Controller
 
         if ($image = request()->file('image')) {
 
-            $destinationPath = 'images/';
-
             $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
-
-            $image->move($destinationPath, $profileImage);
-
+            $path = request()->file('image')->storeAs('public/images',$profileImage);
+   
             request()->image = "$profileImage";
             if ($post->image) {
                 Storage::delete('public/images/' . $post->image);
-              }
+            }
 
         }
         else
@@ -138,12 +134,19 @@ class PostController extends Controller
         return to_route('posts.index');
     }
 
+    ####################### End Update #####################
 
-    public function delete($postId)
+    public function destroy($postId)
     {
         $post=Post::find($postId);
-        Storage::delete('public/images/'.$post->image);
+        
+        if(isset($post->image))
+        {
+            Storage::delete('public/images/' . $post->image);
+
+        }
         $post->delete();
+        
         return back();
     }
 

@@ -33,7 +33,7 @@ Route::get('/', function () {
 //     dd($user->posts);
 // });
 // delete and restore routing
-Route::delete('posts/{id}', [PostController::class, 'delete'])->name('posts.delete');
+// Route::delete('posts/{id}', [PostController::class, 'delete'])->name('posts.delete');
 Route::get('posts/restore/one/{id}', [PostController::class, 'restore'])->name('posts.restore');
 Route::get('restoreAll', [PostController::class, 'restoreAll'])->name('posts.restore.all');
 

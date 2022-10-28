@@ -18,6 +18,7 @@
 <a href="{{ route('posts.index', ['view_deleted' => 'DeletedRecords']) }}" class="btn btn-primary">View Delete Records</a>
 
 @endif
+
 <table class="table mt-4">
   <thead>
     <tr>
@@ -27,26 +28,21 @@
       <th scope="col">Posted By</th>
       <th scope="col">Created At</th>
       <th scope="col">Slug</th>
-
       <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
     @foreach ($posts as $post)
       <tr>
-        <td>{{$post['id']}}</th>
-        <td><img src="/images/{{ $post->image }}" width="100px"></td>
+        <td>{{$post->id}}</th>
+        <td><img src="{{ url('storage/images/'.$post->image )}}" alt="" width="100px"></td>
         <td>{{$post->title}}</td>
-        @if($post->user)
-          <td>{{$post->user->name}}</td>
-        @else
-          <td>Not Defined</td>
-        @endif
+        <td>{{$post->user->name}}</td>
         <td>{{$post->created_at->toDateString()}}</td>
         <td>{{$post->slug}}</td>
         <td>
-            <a href="{{route('posts.show', $post['id'])}}" class="btn btn-info">View</a>
-            <a href="{{route('posts.edit',$post['id'])}}" class="btn btn-primary">Edit</a>
+            <a href="{{route('posts.show', $post->id)}}" class="btn btn-info">View</a>
+            <a href="{{route('posts.edit',$post->id)}}" class="btn btn-primary">Edit</a>
             {{-- <x-button typee="info" msg="Delete"></x-button> --}}
 
              @if(request()->has('view_deleted'))
@@ -54,41 +50,44 @@
             <a href="{{ route('posts.restore', $post->id) }}" class="btn btn-success">Restore</a>
 
              @else
-             
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{$post->id}}">
+                  Delete
+                </button>
+                  {{-- <form action="{{ route('posts.destroy', $post->id)}}" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-danger"  type="submit">Delete</button>
+                  </form> --}}
+               
 
-             <!-- Button trigger modal -->
-<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Delete!
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Deleting Post</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-     Are You Sure You Want Delete This Post ?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
-        <form action="{{ route('posts.delete', $post['id'])}}" method="post">
-          @csrf
-          @method('DELETE')
-          <button class="btn btn-danger"  type="submit">Delete</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal{{$post->id}}"  aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Deleting Post</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                    Are You Sure You Want Delete This Post ?
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <form action="{{ route('posts.destroy', $post->id)}}" method="post">
+                      @csrf
+                      @method('DELETE')
+                      <button class="btn btn-danger"  type="submit">Delete</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
 
        @endif
 
-        </td>
-      </tr>
+          </td>
+        </tr>
     @endforeach
   </tbody>
 </table> 
