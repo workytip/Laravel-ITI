@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use Attribute;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Database\Eloquent\Casts\Attribute as CastsAttribute;
+use Illuminate\Database\Eloquent\Casts\Attribute ;
 
 class Post extends Model
 {
@@ -42,5 +41,19 @@ class Post extends Model
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
-  
+
+
+ /**
+ * Get the user's first name.
+ *
+ * @return \Illuminate\Database\Eloquent\Casts\Attribute
+ */
+protected function createdAt(): Attribute
+{
+    return Attribute::make(
+        get: fn ($value) => Carbon::create( $value)->format('Y/m/d'),
+    );
+}
+
+
 }

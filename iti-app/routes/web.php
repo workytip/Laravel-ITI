@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -52,3 +54,78 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/profile/{id}/edit', [App\Http\Controllers\HomeController::class, 'edit'])->name('profile.edit');
 Route::put('/profile/{id}', [App\Http\Controllers\HomeController::class, 'update'])->name('profile.update');
+
+
+
+################ SOCIALITE ROUTING ##################
+
+ 
+Route::get('/auth/redirect/github', function () {
+    return Socialite::driver('github')->redirect();
+})->name('auth.github');
+ 
+Route::get('/auth/callback/github', function () {
+    // $user = Socialite::driver('github')->user();
+    
+
+    $githubUser = Socialite::driver('github')->user();
+    //  dd($githubUser);
+
+    $user = User::where('email', $githubUser->email)->first();
+    if($user) {
+        $user->update([
+            'name' => $githubUser->nickname,
+        ]);
+    } else {
+        $user = User::create([
+            'email' => $githubUser->email,
+            'name' => $githubUser->nickname,
+        ]);
+    }
+ 
+    // $user = User::updateOrCreate(
+    //     [
+    //     'github_id' => $githubUser->id|1,
+    //     ], 
+    //      [
+    //     'name' => $githubUser->nickname,
+    //     'email' => $githubUser->email,
+    //     // 'github_token' => $githubUser->token,
+    //     // 'github_refresh_token' => $githubUser->refreshToken,
+    //  ]);
+ 
+    Auth::login($user);
+    return redirect('posts');
+ 
+    // $user->token
+});
+
+######################## Google Routes ############
+Route::get('/auth/redirect/google', function () {
+    return Socialite::driver('google')->redirect();
+})->name('auth.google');
+ 
+Route::get('/auth/callback/google', function () {
+    // $user = Socialite::driver('github')->user();
+    
+
+    $googleUser = Socialite::driver('google')->user();
+    //   dd($googleUser);
+
+    $user = User::where('email', $googleUser->email)->first();
+    if($user) {
+        $user->update([
+            'name' => $googleUser->name,
+        ]);
+    } else {
+        $user = User::create([
+            'email' => $googleUser->email,
+            'name' => $googleUser->name,
+        ]);
+    }
+
+ 
+    Auth::login($user);
+    return redirect('posts');
+ 
+});

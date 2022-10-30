@@ -38,7 +38,7 @@
         <td><img src="{{ url('storage/images/'.$post->image )}}" alt="" width="100px"></td>
         <td>{{$post->title}}</td>
         <td>{{$post->user->name}}</td>
-        <td>{{$post->created_at->toDateString()}}</td>
+        <td>{{$post->created_at}}</td>
         <td>{{$post->slug}}</td>
         <td>
             <a href="{{route('posts.show', $post->id)}}" class="btn btn-info">View</a>
