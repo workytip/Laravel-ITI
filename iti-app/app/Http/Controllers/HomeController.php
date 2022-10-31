@@ -48,11 +48,16 @@ class HomeController extends Controller
         else{
             request()->validate([
                 'name'=>['required','min:3'],
-                'email'=>['required','unique:users','email'],
+                'email'=>['required','unique:users,email','email'],
                 'password'=>['required','min:8']
             ]);
         }
         
+        // request()->validate([
+        //     'name'=>['required','min:3'],
+        //     'email'=>['required','unique:users,email,'.$userId,'email'],
+        //     'password'=>['required','min:8']
+        // ]);
         
 
         // if ($image = request()->file('image')) {

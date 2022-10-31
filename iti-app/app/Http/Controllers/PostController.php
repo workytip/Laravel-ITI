@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePostRequest;
 use App\Jobs\PruneOldPostsJob;
 use App\Models\Comment;
-use Illuminate\Database\Eloquent\Collection;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\User;
-use App\Rules\Postsnumber;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
@@ -46,17 +45,20 @@ class PostController extends Controller
         return view('posts.show',['post' => $post]);
     }
 
-    public function store()
+    public function store(StorePostRequest $request)
     {
  
 
-    request()->validate([
-    'title'=>['required','unique:posts','min:3','max:50'],
-    'description'=>['required','min:10'],
-    'post_creator'=>['exists:users,id',new Postsnumber],
-    'image' => 'image|mimes:png,jpg|max:4048',
+    // request()->validate([
+    // 'title'=>['required','unique:posts','min:3','max:50'],
+    // 'description'=>['required','min:10'],
+    // 'post_creator'=>['exists:users,id',new Postsnumber],
+    // 'image' => 'image|mimes:png,jpg|max:4048',
 
-        ]);
+    //     ]);
+        $validated = $request->validated();
+        //  dd($validated['title']);
+
         if ($image = request()->file('image')) {
 
          $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
@@ -66,12 +68,12 @@ class PostController extends Controller
         }
         $Post =new Post();
         //insert data
-        $data = request()->all();
+        // $data = request()->all();
             $Post->create([
-                'title' => request()->title,
-                'description' => $data['description'],
-                'user_id' => $data['post_creator'],
-                'image'=>request()->image
+                'title' => $validated['title'],
+                'description' => $validated['description'],
+                'user_id' => $validated['post_creator'],
+                'image'=>$validated['image']
             ]); 
 
         return to_route('posts.index');

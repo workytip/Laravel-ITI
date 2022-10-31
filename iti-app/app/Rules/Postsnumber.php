@@ -27,8 +27,8 @@ class Postsnumber implements Rule
     public function passes($attribute, $value)
     {
         //
-        $userPosts =Post::select('*')->where('user_id','=',$value)->get();
-        $userPosts = $userPosts->count();
+        $userPosts =Post::select('*')->where('user_id','=',$value)->count();
+        // $userPosts = $userPosts->count();
         return $userPosts < 3;
     
     }
